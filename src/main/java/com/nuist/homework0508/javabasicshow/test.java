@@ -1,16 +1,11 @@
 package com.nuist.homework0508.javabasicshow;
 
-import org.w3c.dom.html.HTMLImageElement;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class test {
     public static void main(String[] args) {
@@ -155,7 +150,7 @@ public class test {
 //        t1.start();
 //        t2.start();
 
-//        System.out.println(selectById(1));
+        System.out.println(selectById(1));
 
 
 
