@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBUtil {
-    private static final String url = "jdbc: mysql://localhost:3306/test2?character=utf8&useSSL=false&serverTimeZone=UTC&allowPublicKeyRetrieval=true";
+    private static final String url = "jdbc:mysql://localhost:3306/test2?character=utf8" +
+            "&useSSL=false&serverTimeZone=UTC&allowPublicKeyRetrieval=true";
     private static final String useName = "root";
     private static final String password= "123456";
     static {

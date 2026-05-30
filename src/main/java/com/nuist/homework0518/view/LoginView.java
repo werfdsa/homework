@@ -19,19 +19,43 @@ public class LoginView {
     }
 
     public static void userLoginView(){
+        Print.print("用户登录");
         Print.print("请输入用户名");
         Scanner sc = new Scanner(System.in);
         String username = sc.nextLine();
         Print.print("请输入密码");
         String password = sc.nextLine();
+        LoginController.UserLogin(username,password);
 
     }
 
     public static void adminLoginView(){
-
+        Print.print("管理员登录");
+        Print.print("请输入用户名");
+        Scanner sc = new Scanner(System.in);
+        String username = sc.nextLine();
+        Print.print("请输入密码");
+        String password = sc.nextLine();
+        LoginController.AdminLogin(username,password);
     }
 
     public static void userRegister(){
+
+        Print.print("新用户注册");
+        Print.print("请输入用户名");
+        Scanner sc = new Scanner(System.in);
+        String username = sc.nextLine();
+        Print.print("请输入密码");
+        String password = sc.nextLine();
+        Print.print("请再次输入密码");
+        String password1 = sc.nextLine();
+        if(password.equals(password1)){
+            Print.print("注册成功");
+            LoginView.loginView();
+        }else {
+            Print.print("两次密码不一致,请重新注册");
+            LoginView.userRegister();
+        }
 
     }
 

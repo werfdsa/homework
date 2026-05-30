@@ -11,7 +11,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public Admin findAdminById(int id) {
         Admin admin = new Admin();
-        String sql = "select * from adminusers where id =?";
+        String sql = "select * from adminusers where admin_id =?";
         try(Connection c = DBUtil.getConnection();
             PreparedStatement ps = c.prepareStatement(sql)){
             ps.setInt(1,id);
@@ -28,13 +28,13 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public boolean insertAdmin(Admin admin) {
+    public boolean insertAdmin(String username, String password) {
         boolean result;
         String sql = "insert into adminusers(admin_username, admin_password) values(?,?)";
         try(Connection c = DBUtil.getConnection();
             PreparedStatement ps = c.prepareStatement(sql)){
-            ps.setString(1, admin.getAdminName());
-            ps.setString(2, admin.getPassword());
+            ps.setString(1, username);
+            ps.setString(2, password);
             int a = ps.executeUpdate();
             if(a == 1){
                 result = true;
@@ -49,12 +49,13 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public Admin findAdminByAdminName(String name) {
+    public Admin findAdminByAdminNameAndPassword(String name, String password) {
         Admin admin = new Admin();
-        String sql = "select * from adminusers where id =?";
+        String sql = "select * from adminusers where admin_username =? and admin_password =?";
         try(Connection c = DBUtil.getConnection();
             PreparedStatement ps = c.prepareStatement(sql)){
             ps.setString(1,name);
+            ps.setString(2,password);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 admin.setId(rs.getInt("admin_id"));
