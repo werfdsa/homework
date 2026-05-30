@@ -26,13 +26,12 @@ public class OrderServerImpl implements OrderServer {
             conn = DBUtil.getConnection();
             conn.setAutoCommit(false);
 
-            // 1. 锁定商品行，检查库存，计算总价
             BigDecimal totalAmount = BigDecimal.ZERO;
             for (Map.Entry<Integer, Integer> entry : products.entrySet()) {
                 int productId = entry.getKey();
                 int quantity = entry.getValue();
 
-                String lockSql = "SELECT stock, price FROM products WHERE id = ? FOR UPDATE";
+                String lockSql = "SELECT stock, price FROM products WHERE product_id = ? FOR UPDATE";
                 try (PreparedStatement ps = conn.prepareStatement(lockSql)) {
                     ps.setInt(1, productId);
                     try (ResultSet rs = ps.executeQuery()) {
@@ -51,9 +50,8 @@ public class OrderServerImpl implements OrderServer {
                 }
             }
 
-            // 2. 扣减库存
             for (Map.Entry<Integer, Integer> entry : products.entrySet()) {
-                String sql = "UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?";
+                String sql = "UPDATE products SET stock = stock - ? WHERE product_id = ? AND stock >= ?";
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ps.setInt(1, entry.getValue());
                     ps.setInt(2, entry.getKey());
@@ -65,7 +63,6 @@ public class OrderServerImpl implements OrderServer {
                 }
             }
 
-            // 3. 插入订单
             String orderSql = "INSERT INTO orders(user_id, total_amount, order_status, create_time) "
                     + "VALUES(?, ?, ?, NOW())";
             int orderId;
@@ -84,12 +81,11 @@ public class OrderServerImpl implements OrderServer {
                 }
             }
 
-            // 4. 插入订单明细
             for (Map.Entry<Integer, Integer> entry : products.entrySet()) {
                 int productId = entry.getKey();
                 int quantity = entry.getValue();
 
-                String prodSql = "SELECT product_name, price FROM products WHERE id = ?";
+                String prodSql = "SELECT product_name, price FROM products WHERE product_id = ?";
                 String productName;
                 BigDecimal unitPrice;
                 try (PreparedStatement ps = conn.prepareStatement(prodSql)) {
